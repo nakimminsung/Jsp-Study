@@ -19,6 +19,14 @@
 		 font-family: 'Jua';
 	}
 </style>
+<script type="text/javascript">
+	$(function() { //상품등록창에서 작은 이미지 넣기
+		//select의 선택된 값 얻기
+		var srcImg = $("#photo").val();
+		//작은이미지의 src에 넣어준다
+		$("#myphoto").attr("src","../image2/"+srcImg+".jpg");
+	})
+</script>
 </head>
 <body>
 	<div style="margin: 30px 30px">
@@ -44,14 +52,14 @@
 								<option value="26">머리끈</option>
 								<option value="30">머리띠</option>
 							</select>
-							<img src="../image2/11.jpg" width="40" height="40" id="myphoto">
+								<img src="" width="40" height="40" id="myphoto">
+							</div>
 							<script type="text/javascript">
 								$("#photo").change(function() {
 									var src = "../image2/"+$(this).val()+".jpg";
-									$("myphoto").attr("src",src);
-								})
+									$("#myphoto").attr("src",src);
+								});
 							</script>
-						</div>
 					</td>
 				</tr>
 				
