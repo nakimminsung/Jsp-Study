@@ -122,4 +122,59 @@ public class BookingDao {
 		}
 		return dto;
 	}
+	
+	//삭제
+	public void deleteBooking(String num) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		String sql = "delete from booking where num=?";
+		
+		conn=db.getMysqlConnection();
+		try {
+			pstmt=conn.prepareStatement(sql);
+			
+			//바인딩
+			pstmt.setString(1, num);
+			
+			//실행
+			pstmt.execute();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			db.dbClose(conn, pstmt);
+		}
+	}
+	//수정
+		public void updataBooking(BookingDto dto) {
+			
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			String sql = "update booking set name=?, gender=?, bookday=?, inwon=?, foodphoto=?, "
+					+ "foodprice=?, message=?, writeday=now() where num=?";
+			
+			conn=db.getMysqlConnection();
+			try {
+				pstmt=conn.prepareStatement(sql);
+				
+				//바인딩
+				pstmt.setString(1, dto.getName());
+				pstmt.setString(2, dto.getGender());
+				pstmt.setString(3, dto.getBookday());
+				pstmt.setInt(4, dto.getInwon());
+				pstmt.setString(5, dto.getFoodphoto());
+				pstmt.setString(6, dto.getFoodprice());
+				pstmt.setString(7, dto.getMessage());
+				pstmt.setString(8, dto.getNum());
+				
+				//실행
+				pstmt.execute();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				db.dbClose(conn, pstmt);
+			}
+		}
 }

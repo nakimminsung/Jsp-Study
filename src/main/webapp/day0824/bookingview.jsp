@@ -23,6 +23,18 @@
 	font-family: 'Jua';
 }
 </style>
+<script type="text/javascript">
+	function funcdel(num) {
+		//삭제 버튼에서 보낸 num값 확인
+		//alert(num);
+		
+		var a=confirm("해당 주문사항을 삭제하라면 [확인]을 눌러주세요");
+		//확인 클릭시 a는 true
+		if(a){
+			location.href="deletebooking.jsp?num="+num;
+		}
+	}
+</script>
 </head>
 <body>
 	<%
@@ -116,10 +128,10 @@
 			<tr>
 				<td colspan="2" align="center">
 					<button type="button" class="btn btn-warning" style="width: 120px;"
-						onclick="location.href=''">수정</button>
+						onclick="location.href='bookingupdateform.jsp?num=<%=num%>'">수정</button>
 
 					<button type="button" class="btn btn-danger" style="width: 120px;"
-						onclick="location.href=''">삭제</button>
+						onclick="funcdel(<%=num%>)">삭제</button>
 
 					<button type="button" class="btn btn-info" style="width: 120px;"
 						onclick="location.href='startbooking.jsp'">목록</button>

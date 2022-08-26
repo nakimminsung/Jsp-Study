@@ -76,8 +76,9 @@
 							<%}else{%>	
 								<img src="../image/여자.png" width="40">
 							<%}
-							%> --%> <!-- 2. 3항연산자 --> <img
-					src="../image/<%=dto.getGender().equalsIgnoreCase("m")?"남자":"여자"%>.png"
+							%> --%> <!-- 2. 3항연산자 --> 
+							
+					<img src="../image/<%=dto.getGender().equalsIgnoreCase("m")?"남자":"여자"%>.png"
 					width="40"> &nbsp; <b><%=dto.getName()%></b>
 				</td>
 				<td align="center"><%=dto.getInwon()%>명</td>

@@ -13,7 +13,7 @@
 	int inwon = Integer.parseInt(request.getParameter("inwon"));
 	String message = request.getParameter("message");
 	
-	//메뉴와 가격(,로 연결해서 dto에 넣을 것)
+	//메뉴와 가격(,(컴마)로 연결해서 dto에 넣을 것)
 	String foodname="";
 	String foodprice="";
 	

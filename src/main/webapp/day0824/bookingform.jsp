@@ -28,7 +28,7 @@
 </script>
 </head>
 <body>
-<div style="margin: 30px 30px;"></div>
+<div style="margin: 30px 30px;">
 	<!-- onsubmit 이벤트는 action이 호출되기전에 발생
 	리턴값을 false를 받으면 action이 호출되지 않는다 -->
 	
@@ -119,6 +119,7 @@
 			</tr>
 		</table>
 	</form>
+</div>
 </body>
 </html>
 

@@ -1,25 +1,57 @@
+<%@page import="data.dao.BookingDao"%>
+<%@page import="data.dto.BookingDto"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-   
+<%
+	//1.엔코딩
+	request.setCharacterEncoding("utf-8");
 
- <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Edu+VIC+WA+NT+Beginner:wght@600&family=Gamja+Flower&family=Single+Day&family=Jua&family=Nanum+Pen+Script&display=swap"
-        rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-<style type="text/css">
-	*{
-		 font-family: 'Jua';
-	}
-</style>
-</head>
-<body>
+	//데이타 읽기
+	String num = request.getParameter("num");
+	String name = request.getParameter("name");
+	String gender = request.getParameter("gender");
+	String bookday = request.getParameter("bookday");
+	int inwon = Integer.parseInt(request.getParameter("inwon"));
+	String message = request.getParameter("message");
+	
+	//메뉴와 가격(,(컴마)로 연결해서 dto에 넣을 것)
+	String foodname="";
+	String foodprice="";
+	
+	String []food = request.getParameterValues("food");
+		for(String f:food){
+			System.out.println(f);
+			//,로 분리해서 앞부분은 foodname에 뒷부분은 foodprice에 넣고 컴마 추가
+			String []data = f.split(",");
+			foodname+=data[0]+",";
+			foodprice+=data[1]+",";
+		}
+		
+		//반복문을 나온 후 마지막 컴마 지우기
+		foodname = foodname.substring(0,foodname.length()-1); // 마지막 한 글자 빼고 추출
+		foodprice = foodprice.substring(0,foodprice.length()-1); // 마지막 한 글자 빼고 추출
+		System.out.println(foodname);
+		System.out.println(foodprice);
 
-</body>
-</html>
+		//dto에 담기
+		BookingDto dto = new BookingDto();
+		dto.setNum(num);
+		dto.setName(name);
+		dto.setGender(gender);
+		dto.setBookday(bookday);
+		dto.setFoodphoto(foodname);
+		dto.setFoodprice(foodprice);
+		dto.setMessage(message);
+		dto.setInwon(inwon);
+		
+		//dao 선언
+		BookingDao dao = new BookingDao();
+		
+		//update메서드 호출
+		dao.updataBooking(dto);
+		
+		//내용보기로 이동 bookingview는 숫자를 요구하기 때문에 num을 꼭 넣어줘야한다
+		response.sendRedirect("bookingview.jsp?num="+num);
+		System.out.println(num);
+%>
 
