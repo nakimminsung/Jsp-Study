@@ -20,13 +20,14 @@
 	*{
 		 font-family: 'Jua';
 	}
-	a{
+	
+	a:link, a:visited {
 		text-decoration: none;
-		color:black;
+		color: black;
 	}
 	a:hover {
 		text-decoration: underline;
-		color: blue;
+		color: red;
 	}
 </style>
 </head>
@@ -38,12 +39,12 @@
 	//전체 데이터
 	List<SimpleBoardDto> list = dao.getAllDatas();
 	
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy. MM. dd");
 %>
 <body>
-<div style="margin: 30px 30px; width: 750px;">
+<div style="margin: 30px 30px; width: 750px;" >
 	<button type="button" class="btn btn-outline-info" onclick="location.href='boardform.jsp'" 
-	style="width: 120px; margin-left: 550px;">
+	style="width: 120px; margin-left: 620px; margin-bottom: -100px;">
 	<i class='far fa-edit' style='font-size:24px'></i>
 	글쓰기</button>
 	
@@ -71,8 +72,8 @@
 			%>
 			<tr>
 				<td align="center"><%=totalCount-i%></td>
-				<td>
-					<a href="contentview.jsp?num=<%=dto.getNum()%>" >
+				<td> <!-- 제목 -->
+					<a href="contentview.jsp?num=<%=dto.getNum()%>">
 						<b><%=dto.getSubject()%><b>
 					</a>
 				</td>
@@ -80,7 +81,7 @@
 				
 				<td align="center"><%=sdf.format(dto.getWriteday())%></td>
 				
-				<td><%=dto.getReadcount()%></td>
+				<td align="center"><%=dto.getReadcount()%></td>
 			</tr>
 			<%}
 		}

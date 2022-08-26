@@ -1,25 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-   
+<%
+	//엔코딩
+	request.setCharacterEncoding("utf-8");
+%>
+<!-- useBean은 New객체로 생성하는것과 같다, id는 변수명이 된다 -->
+<jsp:useBean id="dao" class="data.dao.SimpleBoardDao"/>
+<jsp:useBean id="dto" class="data.dto.SimpleBoardDto"/>
 
- <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Edu+VIC+WA+NT+Beginner:wght@600&family=Gamja+Flower&family=Single+Day&family=Jua&family=Nanum+Pen+Script&display=swap"
-        rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-<style type="text/css">
-	*{
-		 font-family: 'Jua';
-	}
-</style>
-</head>
-<body>
+<!-- dto의 멤버와 같은 이름의 폼태그는 자동으로 읽어서 dto에 넣는다
+	name에 위에서 생성된 id명을 넣는다 -->
+<jsp:setProperty property="*" name="dto"/>
 
-</body>
-</html>
-
+<%
+	//db update
+	dao.updateBoard(dto);
+	//수정 후 내용보기로 이동
+	response.sendRedirect("contentview.jsp?num="+dto.getNum());
+%>

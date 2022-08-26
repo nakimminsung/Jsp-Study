@@ -16,10 +16,33 @@
 	*{
 		 font-family: 'Jua';
 	}
+	
+	#wrap{
+    position: absolute;
+    left:50%;
+    top: 50%;
+    transform:translate(-50%,-50%);
+	}
+
 </style>
 </head>
 <body>
-
+<%
+	//num 읽어서 form에서 hidden에 넣는다
+	String num = request.getParameter("num");
+%>
+<div id="wrap">
+	<form action="updatepassaction.jsp" method="post">
+		<input type="hidden" name="num" value="<%=num%>">
+		<div class="input-group">
+			<h4 style="width: 100px;">비밀번호</h4>
+			<input type="password" class="form-control form-control-sm"
+			required="required" autofocus="autofocus" name="pass" style="width: 140px;">
+		</div>
+		<br>
+		<button type="submit" class="btn btn-info">수정 시 필요한 비밀번호 확인</button>
+	</form>
+</div>
 </body>
 </html>
 

@@ -1,25 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-   
+<%
+	//엔코딩
+	request.setCharacterEncoding("utf-8");
+%>
 
- <link
-        href="https://fonts.googleapis.com/css2?family=Anton&family=Edu+VIC+WA+NT+Beginner:wght@600&family=Gamja+Flower&family=Single+Day&family=Jua&family=Nanum+Pen+Script&display=swap"
-        rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-<style type="text/css">
-	*{
-		 font-family: 'Jua';
-	}
-</style>
-</head>
-<body>
+<!-- useeBean은 new로 객체 생성하는 것과 같다
+	 ID는 변수명이 된다-->
 
-</body>
-</html>
+<!-- dao선언 -->
+<jsp:useBean id="dao" class="data.dao.SimpleBoardDao"/>
 
+<!-- dto 선언 -->
+<jsp:useBean id="dto" class="data.dto.SimpleBoardDto"/>
+
+<!-- dto의 멤버와 같은 이름의 폼 태그는 자동으로 읽어서 dto에 넣어주기 
+	 name에는 위에서 생성된 id명을 준다-->
+<jsp:setProperty property="*" name="dto"/>
+
+<%
+	//db에 insert
+	dao.insertBoard(dto);
+
+	//목록으로 이동
+	//response.sendRedirect("boardlist.jsp");
+	
+	//내용보기로 이동
+	//방금 insert된 num을 알아야한다
+	int num = dao.getMaxnum(); // num값 불러오기
+	response.sendRedirect("contentview.jsp?num="+num); // 컨텐트 뷰로 이동
+%>
