@@ -71,13 +71,15 @@
 				<td align="center"><%=i+1%></td>
 
 				<td>
-					<!-- 1. if문 --> <%-- <%if(dto.getGender().equalsIgnoreCase("m")){%>
+					<!-- 1. if문 --> 
+					<%-- <%if(dto.getGender().equalsIgnoreCase("m")){%>
 								<img src="../image/남자.png" width="40">
 							<%}else{%>	
 								<img src="../image/여자.png" width="40">
 							<%}
-							%> --%> <!-- 2. 3항연산자 --> 
+							%> --%> 
 							
+					<!-- 2. 3항연산자 --> 
 					<img src="../image/<%=dto.getGender().equalsIgnoreCase("m")?"남자":"여자"%>.png"
 					width="40"> &nbsp; <b><%=dto.getName()%></b>
 				</td>
