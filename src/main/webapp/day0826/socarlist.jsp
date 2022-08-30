@@ -15,7 +15,10 @@
  <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Edu+VIC+WA+NT+Beginner:wght@600&family=Gamja+Flower&family=Single+Day&family=Jua&family=Nanum+Pen+Script&display=swap"
         rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.0.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.0.js">
+
+
+</script>
 <style type="text/css">
 	*{
 		 font-family: 'Jua'
@@ -38,12 +41,11 @@
 	List<SocarDto> list = dao.getAllDatas();
 	//전체갯수
 	int totalCount = dao.getTotalCount();
-	//넘버포맷
-	NumberFormat nf = NumberFormat.getCurrencyInstance();
+
 %>
 <div style="margin: 30px 30px;">
-<!-- 카트폼이 아니라 카트액션으로 가야하는지? -->
-<form action="cartaction.jsp" method="post">
+
+<form action="cart.jsp" method="post" onsubmit="return check()">
 	<h3 class="alert alert-danger" style="width: 800px;" align="center">차량목록</h3>
 	<br>
 	<h6><b>총 : <%=totalCount%>개의 게시글이 있습니다</b></h6>
@@ -71,7 +73,7 @@
 				%>
 				<tr>
 					<td align="center">
-						<input type="checkbox" name="chk[]">
+						<input type="checkbox" name="chk" value="<%=dto.getNum()%>">
 					</td>
 					<td align="center"><%=totalCount-i%></td>
 					<td>
@@ -81,7 +83,7 @@
 						</a>
 					</td>
 					<td align="center"><%=dto.getCarcolor()%></td>
-					<td align="center"><%=dto.getCaryear()%>년식</td>
+					<td align="center" id="caryear"><%=dto.getCaryear()%>년식</td>
 					<td><%=dto.getCarprice()%>만원</td>
 					<td align="center"><%=dto.getReadcount()%></td>
 				</tr>

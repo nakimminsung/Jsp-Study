@@ -29,24 +29,41 @@
 		color: blue;
 	}
 </style>
+<script type="text/javascript">
+check();
+ function check() {
+	console.log(1);
+	var len=$("input[name='chk']:checked").val();
+	if(len<1){
+		alert("체크된 항목이 없습니다");
+		return false;
+	}
+}
+ 
+ /* console.log($("#caryear").val()); */
+</script>
 </head>
 <body>
 <%
-	//dao 선언
-	SocarDao dao = new SocarDao();
-	//전체목록 가져오기
-	List<SocarDto> list = dao.getAllDatas();
-	//전체갯수
-	int totalCount = dao.getTotalCount();
-	//넘버포맷
-	NumberFormat nf = NumberFormat.getCurrencyInstance();
+
+//엔코딩
+request.setCharacterEncoding("utf-8");
+//데이터 읽기
+
+List<SocarDto> list = dao.getAllDatas();
+
+String []chk = request.getParameterValues("chk");
+
+
+SocarDao dao = new SocarDao();
+
+
 %>
 <div style="margin: 30px 30px;">
-<!-- 카트폼이 아니라 카트액션으로 가야하는지? -->
-<form action="" method="post">
+
+<form action="deleteaction.jsp" method="post" onsubmit="return check()">
 	<h3 class="alert alert-danger" style="width: 800px;" align="center">차량목록</h3>
 	<br>
-	<h6><b>총 : <%=totalCount%>개의 게시글이 있습니다</b></h6>
 	<table class="table table-bordered" style="width: 800px">
 		<caption align="top"><h5><b>등록된 차량 목록</b></h5></caption>
 		<tr class="table-light">
@@ -58,7 +75,7 @@
 			<th width="150">가격</th>
 			<th>조회</th>
 		</tr>
-		<%
+		<%-- <%
 			if(totalCount==0){%>
 			<tr>
 				<td colspan="7" align="center">
@@ -66,14 +83,11 @@
 				</td>
 			</tr>
 			<%}else{
-				for(int i=0; i<list.size(); i++){
-					SocarDto dto = list.get(i);
-				%>
+				for(int i=0; i<list.size(); i++){%>
 				<tr>
 					<td align="center">
-						<input type="checkbox">
+						<input type="checkbox" name="chk">
 					</td>
-					<td align="center"><%=totalCount-i%></td>
 					<td>
 						<a href="contentview.jsp?num=<%=dto.getNum()%>">
 							<b><%=dto.getCarname()%>&nbsp;
@@ -81,16 +95,16 @@
 						</a>
 					</td>
 					<td align="center"><%=dto.getCarcolor()%></td>
-					<td align="center"><%=dto.getCaryear()%></td>
-					<td><%=nf.format(dto.getCarprice())%></td>
+					<td align="center"><%=dto.getCaryear()%>년식</td>
+					<td><%=dto.getCarprice()%>만원</td>
 					<td align="center"><%=dto.getReadcount()%></td>
 				</tr>
 				
 			<%}
 		}%>
-	</table>
+ --%>	</table>
 	<button type="submit" class="btn btn-outline-info">삭제</button>
-	<button type="button" class="btn btn-outline-info" onclick="location.href='socarlist.jsp'">목록으로이동</button>
+	<button type="button" class="btn btn-outline-info" onclick="location.href='addform.jsp'">글쓰기</button>
 	</form>
 </div>
 </body>

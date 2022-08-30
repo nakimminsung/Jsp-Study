@@ -13,6 +13,7 @@ public class DbConnect {
 	
 	static final String MYSQL_DRIVER="com.mysql.cj.jdbc.Driver";
 	static final String MYSQL_URL="jdbc:mysql://localhost:3306/bitcamp?serverTimezone=Asia/Seoul";
+	//static final String MYSQL_URL="jdbc:mysql://192.168.0.27:3306/bitcamp?serverTimezone=Asia/Seoul";
 
 	public DbConnect() {
 		try {

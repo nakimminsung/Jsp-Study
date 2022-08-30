@@ -48,6 +48,47 @@ public class SimpleBoardDao {
 		}
 		return list;
 	}
+	
+	//부분 조회 (startNum부터 perPage갯수만큼 반환)
+	public List<SimpleBoardDto> getPagingList(int startNum, int perPage){
+		List<SimpleBoardDto> list = new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "select * from simpleboard order by num desc limit ?,?";
+
+		conn=db.getMysqlConnection();
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			//바인딩
+			pstmt.setInt(1, startNum);
+			pstmt.setInt(2, perPage);
+			
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				SimpleBoardDto dto = new SimpleBoardDto();
+				dto.setNum(rs.getString("num"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setPass(rs.getString("pass"));
+				dto.setContent(rs.getString("content"));
+				dto.setReadcount(rs.getInt("readcount"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setWriteday(rs.getTimestamp("writeday"));
+
+				//list에 추가
+				list.add(dto);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			db.dbClose(conn, pstmt, rs);
+		}
+		return list;
+	}
 
 	//num에 해당하는 DTO 반환
 	public SimpleBoardDto getContent(String num) {

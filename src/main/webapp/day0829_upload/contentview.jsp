@@ -1,6 +1,6 @@
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="data.dto.SimpleBoardDto"%>
-<%@page import="data.dao.SimpleBoardDao"%>
+<%@page import="data.dto.SmartDto"%>
+<%@page import="data.dao.SmartDao"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,7 +9,9 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  
+ <link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css"> 
+   
 <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
  <link
         href="https://fonts.googleapis.com/css2?family=Anton&family=Edu+VIC+WA+NT+Beginner:wght@600&family=Gamja+Flower&family=Single+Day&family=Jua&family=Nanum+Pen+Script&display=swap"
@@ -22,31 +24,43 @@
 	
 	span.day{
 		color: #ccc;
-		font-size: 0.8em;
+		font-size: 0.3em;	
+	}
+	
+	img{
+		max-width: 490px;
 	}
 </style>
 </head>
 <body>
-<jsp:useBean id="dao" class="data.dao.SimpleBoardDao"/>
 <%
 	//num을 읽는다
 	String num = request.getParameter("num");
 
+	//현재 페이지를 읽는다
+	String currentPage = request.getParameter("currentPage");
+
 	//dao 선언
-	//SimpleBoardDao dao = new SimpleBoardDao(); //위에서 jsp로 선언 가능하다
+	SmartDao dao = new SmartDao();
 	
 	//조회수 1증가
 	dao.updateReadCount(num);
 	
 	//dto 가져오기
-	SimpleBoardDto dto = dao.getContent(num);
+	SmartDto dto = dao.getData(num);
 	
 	//날짜형식
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 %>
 <div style="margin: 30px 30px; width: 500px;">
 	<table class="table table-bordered">
-		<caption align="top"><h2><b><%=dto.getSubject()%></b></h2></caption>
+		<caption align="top">
+			<div class="input-group">
+				<img src="../save/<%=dto.getMainphoto()%>" width="70" height="70" class="rounded-circle">
+				&nbsp;
+				<h2><b><%=dto.getSubject()%></b></h2>
+			</div>
+		</caption>
 		<tr>
 			<td>
 				<b>작성자:<%=dto.getWriter()%></b><br>
@@ -56,34 +70,50 @@
 		</tr>
 		<tr height="150">
 			<td>
-				<!-- 여러줄을 입력했어도 출력시 한줄로 나온다 
-				해결방법
-					1. pre태그 안에 쓴다
-					2. db저장시 br 태그가 \으로 저장되므로, 다시 출력시 br로 변환 시켜줘야 한다
-						-> replace 명령어를 사용-->
-				<%=dto.getContent().replace("\n", "<br>")%>
+				<%
+					if(dto.getContent()==null){%>
+						<h1 style="color: red;">저장된 내용 없음!</h1>	
+					<%}else{%>
+						<!-- 엔터없이 길게 썻을경우 500px 안에서 자동줄넘김 되도록 하기 -->
+						<!-- <div style="white-space:pre-wrap; word-wrap:break-word;width: 500px;">
+							스마트 에디터에 자동 줄넘김이 들어가있으므로 넣지 않아도 되지만 스마트에디터가 아닐 경우에는 넣어줘야한다 -->
+						<%=dto.getContent()%>
+						<!-- </div> -->
+					<%}
+				%>
 			</td>
 		</tr>
 		<tr>
 			<td align="center">
 				<button type="button" class="btn btn-primary btn-sm" style="width: 100px"
-				onclick="location.href='boardform.jsp'"><i class='fas fa-pen' style='font-size:15px'></i>글쓰기</button>
+				onclick="location.href='smartform.jsp'"><i class='fas fa-pen' style='font-size:15px'></i>글쓰기</button>
 				
 				<button type="button" class="btn btn-success btn-sm" style="width: 100px;"
-				onclick="location.href='updatepassform.jsp?num=<%=num%>'">
+				onclick="location.href='updateform.jsp?num=<%=num%>&currentPage=<%=currentPage%>'">
 				<i class='far fa-edit' style='font-size:15px'></i>수정</button>
 				
 				<button type="button" class="btn btn-danger btn-sm" style="width: 100px;"
-				onclick="location.href='deletepassform.jsp?num=<%=num%>'">
+				onclick="funcdel(<%=num%>,<%=currentPage%>)">
 				<i class='far fa-trash-alt' style='font-size:15px'></i>삭제</button>
 				
 				<button type="button" class="btn btn-info btn-sm" style="width: 100px;"
-				onclick="location.href='boardlist.jsp'">
+				onclick="location.href='smartlist.jsp?currentPage=<%=currentPage%>'">
 				<i class='fas fa-th-list' style='font-size:15px'></i>목록</button>
 			</td>
 		</tr>
 	</table>
 </div>
+<script type="text/javascript">
+	function funcdel(num,currentPage) {
+		//alert(num+","+currentPage);
+		var a = confirm("삭제하려면 [확인]을 눌러주세요");
+		if(a){
+			location.href = "deleteaction.jsp?num="+num+"&currentPage="+currentPage;
+		}else{
+			alert("취소되었습니다")
+		}
+	}
+</script>
 </body>
 </html>
 

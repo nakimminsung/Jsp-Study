@@ -222,4 +222,40 @@ public class SocarDao {
 			db.dbClose(conn, pstmt);
 		}
 	}
+	
+	//넘버가 맞는지 체크하고 true면 1
+	public boolean isNumCheck(String num) {
+		boolean check = false;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String sql = "select count(*) from socar where num=?";
+		
+		conn  = db.getMysqlConnection();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			//바인딩
+			pstmt.setString(1, num);
+			
+			//실행
+			rs=pstmt.executeQuery();
+			
+			if(rs.next()) {
+				//초기값이 false
+				if(rs.getInt(1)==1) {
+					check=true;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			db.dbClose(conn, pstmt, rs);
+		}
+		return check;
+	}
 }
