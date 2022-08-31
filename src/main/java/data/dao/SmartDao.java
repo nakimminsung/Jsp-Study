@@ -87,6 +87,47 @@ public class SmartDao {
 		return list;
 	}
 	
+	//all list
+	public List<SmartDto> getAllList()
+	{
+		List<SmartDto> list=new ArrayList<>();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String sql = "select * from smartbbs order by num desc";
+
+		conn=db.getMysqlConnection();
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			
+			//실행
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) {
+				SmartDto dto = new SmartDto();
+				dto.setNum(rs.getString("num"));
+				dto.setWriter(rs.getString("writer"));
+				dto.setContent(rs.getString("content"));
+				dto.setMainphoto(rs.getString("mainphoto"));
+				dto.setSubject(rs.getString("subject"));
+				dto.setReadcount(rs.getInt("readcount"));
+				dto.setWriteday(rs.getTimestamp("writeday"));
+				
+				
+				//list에 추가
+				list.add(dto);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			db.dbClose(conn, pstmt, rs);
+		}
+		return list;
+	}
+	
 	
 	//one select
 		public SmartDto getData(String num)
