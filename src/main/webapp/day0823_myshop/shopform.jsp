@@ -25,7 +25,7 @@
 		var srcImg = $("#photo").val();
 		//작은이미지의 src에 넣어준다
 		$("#myphoto").attr("src","../image2/"+srcImg+".jpg");
-	})
+	});
 </script>
 </head>
 <body>

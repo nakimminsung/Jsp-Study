@@ -14,7 +14,48 @@ import db.DbConnect;
 public class MyShopDao {
 
 	DbConnect db = new DbConnect();
+	//상품명으로 조회 최신 등록순
+		public List<MyShopDto> getSearchSangpums(String sangpum){
+			List<MyShopDto> list = new Vector<>();
+			Connection conn = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
 
+			String sql = "select * from myshop where sangpum like ? order by num desc";
+
+			//db연결
+			conn = db.getMysqlConnection();
+			//pstmt
+			try {
+				pstmt = conn.prepareStatement(sql);
+				//바인딩
+				pstmt.setString(1, "%"+sangpum+"%");
+				rs=pstmt.executeQuery();
+				while(rs.next()) {
+					//db에서 가져와서 dto에 담기
+					MyShopDto dto = new MyShopDto();
+					dto.setNum(rs.getString("num"));
+					dto.setSangpum(rs.getString("sangpum"));
+					dto.setPhoto(rs.getString("photo"));
+					dto.setColor(rs.getString("color"));
+					dto.setPrice(rs.getInt("price"));
+					dto.setIpgoday(rs.getString("ipgoday"));
+					dto.setWriteday(rs.getTimestamp("writeday"));
+
+					//list에 추가
+					list.add(dto);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}finally {
+				db.dbClose(conn, pstmt, rs);
+			}
+
+
+			return list;
+		}
+	
 	//전체 데이타 조회
 	public List<MyShopDto> getAllSangpums(){
 		List<MyShopDto> list = new Vector<>();
