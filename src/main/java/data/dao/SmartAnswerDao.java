@@ -104,7 +104,7 @@ public class SmartAnswerDao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "update smartanswer set nickname=?, content=?, where idx=?";
+		String sql = "update smartanswer set nickname=?, content=? where idx=?";
 		
 		conn = db.getMysqlConnection();
 		try {
@@ -113,6 +113,8 @@ public class SmartAnswerDao {
 			pstmt.setString(1, dto.getNickname());
 			pstmt.setString(2, dto.getContent());
 			pstmt.setString(3, dto.getIdx());
+			
+			pstmt.execute();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

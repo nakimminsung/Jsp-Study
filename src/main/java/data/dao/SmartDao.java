@@ -132,6 +132,7 @@ public class SmartDao {
 	//one select
 		public SmartDto getData(String num)
 		{
+			System.out.println(num);
 			SmartDto dto=new SmartDto();
 			Connection conn = null;
 			PreparedStatement pstmt = null;

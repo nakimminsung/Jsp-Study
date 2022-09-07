@@ -1,3 +1,4 @@
+<%@page import="data.dao.SmartAnswerDao"%>
 <%@page import="data.dto.SmartDto"%>
 <%@page import="java.util.List"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -85,6 +86,18 @@ a:hover {
 	//페이지에서 보여질 글만 가져오기
 	List<SmartDto> list = dao.getPagingList(startNum, perPage);
 	
+	//list의 각 dto에 댓글 개수 저장해두기
+	SmartAnswerDao adao = new SmartAnswerDao(); // 댓글에 관한 dao
+	for(SmartDto dto:list){
+		
+		//댓글 변수에 댓글 총 갯수 넣기
+		int acount = adao.getAnswerList(dto.getNum()).size();
+		dto.setAnswercount(acount);
+		
+		//위에껄 한줄로 줄인 것
+		//dto.setAnswercount(adao.getAnswerList(dto.getNum()).size());
+	}
+	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy. MM. dd");
 %>
 <body>
@@ -124,14 +137,37 @@ a:hover {
 			<tr>
 				<td align="center"><input type="checkbox" class="alldel" value="<%=dto.getNum()%>"></td>
 				<td align="center"><%=no--%></td>
+				
 				<td>
+			<div class="input-group">
 					<!-- 제목 --> 
 				<a href="contentview.jsp?num=<%=dto.getNum()%>&currentPage=<%=currentPage%>">
 						<span style="text-overflow:ellipsis;overflow: hidden;white-space: nowrap;display: block;max-width: 200px;">
-						<img src="../save/<%=dto.getMainphoto()%>"style="width: 40px; border: 1px;"> &nbsp;&nbsp; 
+						
+						<!-- onerror는 엑스박스가 뜰 경우 대체이미지로 변경이 가능하다 -->
+						<img  src="../save/<%=dto.getMainphoto()%>" width="40" height="40"
+					   border="1" onerror="this.src='../image/noimage.jpg'">
+					   
+						<%-- <img src="../save/<%=dto.getMainphoto()%>"style="width: 40px; border: 1px;"> &nbsp;&nbsp;  --%>
+						
 						<!-- 제목이 길 경우 자동으로 .. 하기 -->
 						<b><%=dto.getSubject()%><b></span>
 				</a>
+				
+				<!-- 댓글부분 -->
+				&nbsp;
+				<!-- 댓글 개수 출력 -->
+				<%
+					if(dto.getAnswercount()>0){%>
+						<!-- 같은 페이지로 이동시 마지막에 #id를 추가하면 그 부분이 보이게 페이지가 열린다 -->
+						<a href="contentview.jsp?num=<%=dto.getNum()%>&currentPage=<%=currentPage%>#alist" style="color: red;">
+						<%=dto.getAnswercount()%>
+						</a>
+					<%}
+				%>
+				<!-- 댓글 끝 -->
+			</div>	
+			
 				</td>
 				<td align="center"><%=dto.getWriter()%></td>
 

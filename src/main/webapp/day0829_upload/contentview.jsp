@@ -14,6 +14,9 @@
         rel="stylesheet">
     <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
     <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+ 	<link rel="stylesheet" href="/resources/demos/style.css">
+ 	<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <style type="text/css">
     	body *{
     		font-family:'Jua';
@@ -70,8 +73,69 @@
 				});
 			 }
 		});
-	});
+		 $( "#dialog" ).dialog({
+		      autoOpen: false,
+		      show: {
+		        effect: "blind",
+		        duration: 100
+		      },
+		      hide: {
+		        effect: "explode",
+		        duration: 100
+		      }
+		 });
+		
+		$(document).on("click",".amod",function(){
+			idx = $(this).attr("idx");
+			
+			$.ajax({
+				type:"get",
+				url:"jsonupdateform.jsp",
+				dataType:"json",
+				data: {"idx":idx},
+				success:function(res){	
+					$("#unickname").val(res.nickname);
+					$("#ucontent").val(res.content);
+				},
+				statusCode: {
+					404:function(){
+						alert("json 파일을 찾을수 없어요!");
+					},
+					500:function(){
+						alert("서버 오류..코드를 다시 한번 보세요!");
+					}
+				}
+			});
+			$( "#dialog" ).dialog( "open" );
+		});
+		
+	});//$funtion close
 	
+	
+	//댓글수정
+	$(document).on("click","#btnupdate",function(){
+		var nickname = $("#unickname").val();
+		var content = $("#ucontent").val();
+		
+		$.ajax({
+			type:"get",
+			url:"updateanswer.jsp",
+			dataType:"html",
+			data:{"idx":idx, "nickname":nickname, "content":content},
+			success:function(res){	
+				$("#dialog").dialog("close"); //다이얼로그 닫기
+				list();
+			},
+			statusCode: {
+				404:function(){
+					alert("json 파일을 찾을수 없어요!");
+				},
+				500:function(){
+					alert("서버 오류..코드를 다시 한번 보세요!");
+				}
+			}
+		});
+	});
 	function list() {
 		//댓글 출력
 		console.log("list num=" +$("#num").val());
@@ -90,6 +154,7 @@
 					s+="<div>"+item.nickname+":"+item.content;
 					s+="<span class='aday'>"+item.writeday+"</span>";
 					s+="<button type='button' idx='"+item.idx+"'class='adel'>삭제</button>";
+					s+="<button type='button' idx='"+item.idx+"'class='amod'>수정</button>";
 					s+="</div>";
 				});
 				$("div.alist").html(s);		
@@ -107,7 +172,15 @@
    </script>
 </head>
 <body>
-<jsp:useBean id="dao" class="data.dao.SmartDao"></jsp:useBean>
+<div id="dialog" title="댓글수정">
+	<b>닉네임:</b>
+	<input type="text" id="unickname" style="width: 100px;">
+	<br>
+	<b>댓글내용:</b>
+	<input type="text" id="ucontent" style="width: 150px;">
+	<button type="button" id="btnupdate">댓글수정</button>
+</div>
+	<jsp:useBean id="dao" class="data.dao.SmartDao"></jsp:useBean>
 <%
 	//num을 읽는다
 	String num=request.getParameter("num");
@@ -160,7 +233,7 @@
 		<tr>
 			<td>
 				<b class="acount">댓글 <span>0</span></b>
-				<div class="alist">
+				<div class="alist" id="alist">
 					댓글목록
 				</div>
 				<div class="aform input-group">
